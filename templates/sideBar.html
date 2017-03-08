@@ -1,0 +1,46 @@
+ <!-- Sidebar -->
+            <div id="sidebar-wrapper" ng-controller="sidebar">
+                <ul class="sidebar-nav">
+                        <li class="sidebar-brand">
+                            <a href="#" id="mainlink">
+                                Bracketball
+                            </a>
+                        </li>
+                        <li><a href="">Register</a></li>
+                        <li class="divider-vertical"></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">Log In <strong class="caret"></strong></a>
+                            <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+                                <form action="login.php" method="post">
+                                    Username:<br />
+                                    <input type="text" name="username" value="<?php echo $submitted_username; ?>" />
+                                    <br /><br />
+                                    Password:<br />
+                                    <input type="password" name="password" value="" />
+                                    <br /><br />
+                                    <input type="submit" class="btn btn-info" value="Login" />
+                                </form>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" id="bracketlink">Bracket</a>
+                        </li>
+                        <li>
+                            <a href="#">Scores</a>
+                        </li>
+                    <div id="league1">
+                    </div>
+                    <div id="league2">
+                    </div>
+                    <div id="league3">
+                    </div>
+                    <div id="league4">
+                    </div>
+                    <div id="league5">
+                    </div>
+                        <li>
+                            <a href="#">My Account</a>
+                        </li>
+                </ul>
+                 <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+            </div>
