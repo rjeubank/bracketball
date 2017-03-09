@@ -1,6 +1,6 @@
 <?php
-require_once '/../includes/db.php'; // The mysql database connection script
-require_once '/../includes/auth.php'; 
+require_once __DIR__ . '/../includes/db.php'; // The mysql database connection script
+require_once __DIR__ . '/../includes/auth.php'; 
 if(isset($_POST['email']) && isset($_POST['password'])){
     $response = $auth->login($_POST['email'],$_POST['password'],1);
     if($response['message'] == 'Email address / password are incorrect.')

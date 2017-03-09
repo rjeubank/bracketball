@@ -1,5 +1,5 @@
 <?php
-require_once '/includes/db.php'; // The mysql database connection script
+require_once __DIR__ . '/includes/db.php'; // The mysql database connection script
 class urlContentReader{
 	private $url='';
 	private $headline='';

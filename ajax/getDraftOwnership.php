@@ -1,10 +1,10 @@
 <?php
-require_once '/../includes/db.php'; // The mysql database connection script
+require_once __DIR__ . '/../includes/db.php'; // The mysql database connection script
 if(isset($_GET['lid']))
 	$leagueID = $mysqli->real_escape_string($_GET['lid']);
 if(isset($_GET['uid']))
 	$userID = $mysqli->real_escape_string($_GET['uid']);
-$year=2016;
+
 $query="SELECT league.league_name,users.user_name,users.uid,league_members.pick_number FROM league_members 
 	LEFT JOIN league ON league_members.lid = league.lid
 	LEFT JOIN users ON league_members.uid = users.uid
@@ -38,6 +38,7 @@ if(isset($userID) && $userID!=''){
 		}
 	}
 }
+
 $arrTeamsOwned = [];
 if(isset($userID))
 {
@@ -46,7 +47,7 @@ if(isset($userID))
 		LEFT JOIN ownership	ON team.tid = ownership.tid 
 		LEFT JOIN league ON ownership.lid = league.lid
 		LEFT JOIN users ON ownership.uid = users.uid
-		WHERE year.year='$year' AND ownership.lid='$leagueID' AND ownership.uid='$userID'";
+		WHERE ownership.lid='$leagueID' AND ownership.uid='$userID'";
 	$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 	if($result->num_rows > 0) {
 	    while($row = $result->fetch_assoc()) {
@@ -57,7 +58,6 @@ if(isset($userID))
 $arrResults['users'] = $arrUserStyles;
 $arrResults['teams'] = $arrTeamsOwned;
 $arrResults['order'] = $arrDraftOrder;
-
 
 //print_r($arrResults);
 	echo $json_response = json_encode($arrResults);

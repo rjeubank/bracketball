@@ -1,5 +1,5 @@
 <?php
-require_once '/../includes/db.php'; // The mysql database connection script
+require_once __DIR__ . '/../includes/db.php'; // The mysql database connection script
 if(isset($_GET['user']) && isset($_GET['league'])){
 	$user = $mysqli->real_escape_string($_GET['user']);
 	$league = $mysqli->real_escape_string($_GET['league']);

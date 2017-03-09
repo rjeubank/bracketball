@@ -1,5 +1,5 @@
 <?php
-require_once '/../includes/db.php'; // The mysql database connection script
+require_once __DIR__ . '/../includes/db.php'; // The mysql database connection script
 if(isset($_GET['lid']))
 	$leagueID = $mysqli->real_escape_string($_GET['lid']);
 $query="SELECT * FROM draft_status WHERE lid='$leagueID'";

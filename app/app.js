@@ -5,8 +5,8 @@ app.controller('sidebar', function($scope,$window, $http) {
 	
  // Load all available items 
 	displayOverview();
-	var user = 'ross';
-	setSideBar();
+	// var user = 'ross';
+	// setSideBar();
 	// $("div#draftStatusWrapper").hide();
 	// $("div#draftSliderWrapper").hide();
 
@@ -28,7 +28,8 @@ app.controller('sidebar', function($scope,$window, $http) {
 		var sURLVariables = sPageURL.split('#');
 		leagueidurl = sURLVariables[1];
 		useridurl = sURLVariables[2];
-		displayDraft(leagueidurl,useridurl);
+		displayDraft(leagueidurl,useridurl,-1);
+		createDraftedTeamsTable(leagueidurl,useridurl);
 	})
 
 
@@ -89,7 +90,7 @@ app.controller('sidebar', function($scope,$window, $http) {
 			for(i = 1; i < 17; i++){
 				row = '<tr>';
 				for(j = 1; j < 5; j++){
-					row = row + '<td class="' + data['bracket'][j][i]['style'] + ' draftCell" onclick="setSelected(\'' + data['bracket'][j][i]['formatted_name'] + '\','  + data['bracket'][j][i]['tid'] +')">' + data['bracket'][j][i]['formatted_name'] + '</td>';
+					row = row + '<td class="' + data['bracket'][j][i]['style'] + ' draftCell" onclick="setSelected(\'' + data['bracket'][j][i]['formatted_name'].replace(/'/g, "\\'") + '\',\''  + data['bracket'][j][i]['tid'] +'\')">' + data['bracket'][j][i]['formatted_name'] + '</td>';
 				}
 				row = row + '</tr>';
 				table.append(row);
@@ -186,7 +187,7 @@ app.controller('sidebar', function($scope,$window, $http) {
 		var cookie = getCookie('authID');
     	$.post("ajax/logoutUser.php",{ hash: cookie}).done(function(data){
     		alert("Logged out.");
-			window.location = "/bracketball";
+			window.location = "/";
 		});
 	});
 
@@ -216,7 +217,7 @@ app.controller('sidebar', function($scope,$window, $http) {
 	}
 
 	function createLeagueDraftBracket(leagueid){
-		$http.post("ajax/getLeagueBracket.php?lid="+leagueid).success(function(data){
+		$http.post("ajax/getDraftData.php?lid="+leagueid).success(function(data){
 			var container = $("div#maincontent-wrapper");
 		  	var games = [];
 		  	var scores = [];
@@ -349,7 +350,7 @@ app.controller('sidebar', function($scope,$window, $http) {
 				if (fields.length != 3)
 					container.append('<i>INVALID</i>')
 				else
-					container.append('<div class="'+fields[0]+' bracketStyle" onclick="setSelected(\'' + fields[1] + '\','  + fields[2] + ')"">' + fields[1] + '</div>')
+					container.append('<div class="'+fields[0]+' bracketStyle" onclick="setSelected(\'' + fields[1].replace(/'/g, "\\'") + '\',\''  + fields[2] + '\')"">' + fields[1] + '</div>')
 				return;
 	  	}
 	}
@@ -371,7 +372,7 @@ app.controller('sidebar', function($scope,$window, $http) {
 					$('#draftButton').prop('disabled',false);
 				else
 					$('#draftButton').prop('disabled',true);
-				for(i=picknumber; i < Number(picknumber)+8 && i < 65;i++){
+				for(i=picknumber; i < Number(picknumber)+16 && i < 65;i++){
 					if(i==picknumber)
 						tableStringStatus = tableStringStatus + '<td class="selected statusBar ' + data['order'][i]['style'] + '"><b>' + data['order'][i]['user_name'] + '</b></td>';
 					else

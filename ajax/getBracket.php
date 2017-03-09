@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/db.php'; // The mysql database connection script
+require_once __DIR__ . '/../includes/db.php'; // The mysql database connection script
 
 $query="SELECT * FROM team LEFT JOIN region ON team.rid = region.rid LEFT JOIN year ON team.yid = year.yid WHERE year.year=2016";
 $result = $mysqli->query($query) or die($mysqli->error.__LINE__);

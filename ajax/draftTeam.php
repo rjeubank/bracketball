@@ -1,8 +1,11 @@
 <?php
-require_once '/../includes/db.php'; // The mysql database connection script
+require_once __DIR__ . '/../includes/db.php'; // The mysql database connection script
 if(isset($_GET['user']) && isset($_GET['team']) && isset($_GET['league'])){
 	$user = $mysqli->real_escape_string($_GET['user']);
 	$team = $mysqli->real_escape_string($_GET['team']);
+	$arrTeam = explode("/",$team);
+	if(isset($arrTeam[1]))
+		$team = $arrTeam[0];
 	$league = $mysqli->real_escape_string($_GET['league']);
 	$query="SELECT * FROM ownership WHERE lid='$league' AND tid='$team'";
 	$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
@@ -35,6 +38,11 @@ if(isset($_GET['user']) && isset($_GET['team']) && isset($_GET['league'])){
 		$query="INSERT INTO ownership(uid,tid,lid)  VALUES ('$user', '$team', '$league')";
 		$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 		$result = $mysqli->affected_rows;
+		if(isset($arrTeam[1])){
+			$query="INSERT INTO ownership(uid,tid,lid)  VALUES ('$user', '$arrTeam[1]', '$league')";
+			$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+			$result = $mysqli->affected_rows;
+		}
 		echo $json_response = 'success';
 	}
 }

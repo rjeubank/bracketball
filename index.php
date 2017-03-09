@@ -22,9 +22,9 @@
 
     <body>
     <div id="wrapper" ng-controller="sidebar">
-    <?php require 'vendor/autoload.php';
-    require_once 'includes/db.php';
-    require_once 'includes/auth.php';
+    <?php require __DIR__ . '/vendor/autoload.php';
+    require_once __DIR__ . '/includes/db.php';
+    require_once __DIR__ . '/includes/auth.php';
     if ($auth->isLogged()) {
         $user = $auth->getSessionUID($_COOKIE['authID']);
         $query="SELECT users.uid,user_name,email,league.lid,league_name,draft_time FROM users LEFT JOIN league_members ON users.uid = league_members.uid LEFT JOIN league ON league.lid = league_members.lid WHERE users.uid='$user'";
@@ -60,24 +60,16 @@
                             <a href="#">Scores</a>
                         </li>
                         <?php
-                            foreach($arrUser as $index=>$league){
-                                echo '<li class="nav-item"><div id="league'.($index+1).'"><a id="'.$league['lid'].'lid'.$league['uid'].'" href="#'.$league['lid'].'#'.$league['uid'].'">'.$league['league_name'].'</a></div></li>'; 
+                            if ($auth->isLogged()) {
+                                foreach($arrUser as $index=>$league){
+                                    echo '<li class="nav-item"><div id="league'.($index+1).'"><a id="'.$league['lid'].'lid'.$league['uid'].'" href="#'.$league['lid'].'#'.$league['uid'].'">'.$league['league_name'].'</a></div></li>'; 
+                                }
                             }
                         ?>
-                    
-                    <li class="nav-item"><div id="league2">
-                    </div></li>
-                    <li class="nav-item"><div id="league3">
-                    </div></li>
-                    <li class="nav-item"><div id="league4">
-                    </div></li>
-                    <li class="nav-item"><div id="league5">
-                    </div></li>
-                        <li class="nav-item">
-                            <a href="#">My Account</a>
-                        </li>
+                        
                         <?php
                             if ($auth->isLogged()) {
+                                echo '<li class="nav-item"><a href="#">My Account</a></li>';
                                 echo '<li class="nav-item" id="logout"><a href="#">Logout</a></li>';
                             }
                         ?>

@@ -2,14 +2,21 @@
 require_once __DIR__ . '/../includes/db.php'; // The mysql database connection script
 if(isset($_GET['lid']))
 	$leagueID = $mysqli->real_escape_string($_GET['lid']);
-$query="SELECT team.tid,uni_name,region_rank,seed,mascot,abbrev,year.year,league.league_name,users.user_name FROM team 
-	LEFT JOIN region ON team.rid = region.rid 
-	LEFT JOIN year ON team.yid = year.yid 
-	LEFT JOIN ownership	ON team.tid = ownership.tid 
-	LEFT JOIN league ON ownership.lid = league.lid
-	LEFT JOIN users ON ownership.uid = users.uid
-	LEFT JOIN league_members ON league_members.lid=league.lid AND league_members.uid = users.uid
-	WHERE ownership.lid='$leagueID' ORDER BY league_members.pick_number, users.uid";
+$query="SELECT team.tid,uni_name,region_rank,seed,mascot,abbrev,year.year,league.league_name,users.user_name,league_members.pick_number,users.uid FROM team 
+		LEFT JOIN region ON team.rid = region.rid 
+		LEFT JOIN year ON team.yid = year.yid 
+		LEFT JOIN ownership	ON team.tid = ownership.tid 
+		LEFT JOIN league ON ownership.lid = league.lid
+		LEFT JOIN users ON ownership.uid = users.uid
+		LEFT JOIN league_members ON league_members.lid=league.lid AND league_members.uid = users.uid
+		WHERE ownership.lid='$leagueID' 
+		UNION
+		SELECT team.tid,uni_name,region_rank,seed,mascot,abbrev,year.year,NULL AS league_name,NULL as user_name,NULL as pick_number,NULL as uid FROM team
+	  	LEFT JOIN region ON team.rid = region.rid 
+		LEFT JOIN year ON team.yid = year.yid 
+	    WHERE tid NOT IN (SELECT tid FROM ownership WHERE lid='$leagueID') AND team.yid = (SELECT yid FROM league WHERE lid='$leagueID')
+	    ORDER BY pick_number,uid";
+
 $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 
 $arrStyles = ['team1','team2','team3','team4','team5','team6','team7','team8'];
